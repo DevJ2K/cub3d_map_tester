@@ -6,7 +6,7 @@
 #    By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 15:04:36 by tajavon           #+#    #+#              #
-#    Updated: 2024/01/19 11:11:39 by tajavon          ###   ########.fr        #
+#    Updated: 2024/01/19 12:38:08 by tajavon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,13 +55,14 @@ for map in get_invalid_maps():
 	print(f"{BHWHITE}Executing in {BHMAG}{mapfolder}{RESET} of :{RESET}{BHGREEN} {mapname}{RESET}")
 
 	subprocess.run(command, shell=True)
+	# output = subprocess.run(command, shell=True, capture_output=True)
 	if (display_all == False):
 		outputFreeAlloc = subprocess.run('cat .tmp | grep "total heap usage"' ,shell=True, capture_output=True)
 		outputLeaksPossible = subprocess.run('cat .tmp | grep "All heap blocks"' ,shell=True, capture_output=True)
 		if (leaksMsg in str(outputLeaksPossible.stdout)):
-			print(f"{BHGREEN}OK{RESET}")
+			print(f"{BHGREEN}TEST OK !{RESET}")
 		else:
-			print(f"{BHRED}KO{RESET}")
+			print(f"{BHRED}TEST FAILED !{RESET}")
 	else:
 		subprocess.run('cat .tmp', shell=True)
 	subprocess.run("rm .tmp", shell=True)
