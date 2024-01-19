@@ -1,0 +1,16 @@
+{
+	"filepath": "cub3d",
+
+	"wait_between_try": false,
+
+	"display_output_err": true,
+
+	"valgrind": true,
+
+	"invalid_map_path": [
+		"maps/invalid/basic_test",
+		"maps/invalid/path",
+		"maps/invalid/extra",
+		"maps/invalid/colors"
+	]
+}
