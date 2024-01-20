@@ -2,7 +2,7 @@
 
 ## Setup
 
-Do git clone in your Cub3D Repository. Check in the config.json if the executable path and is correct.
+Clone the repository inside your Cub3D folder. Check in the config.json if the executable path is correct.
 
 ## Run
 
