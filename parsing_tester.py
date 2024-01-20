@@ -6,7 +6,7 @@
 #    By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 15:04:36 by tajavon           #+#    #+#              #
-#    Updated: 2024/01/20 15:19:10 by tajavon          ###   ########.fr        #
+#    Updated: 2024/01/20 16:45:40 by tajavon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ try:
 	file = json.load(fd)
 
 	cub_path = file["filepath"]
+	print(cub_path)
 	map_directory = file["invalid_map_folder"]
 	display_all = False
 
@@ -62,12 +63,12 @@ def valgrind_exec():
 			outputFreeAlloc = subprocess.run('cat .tmp | grep "total heap usage"' ,shell=True, capture_output=True)
 			outputLeaksPossible = subprocess.run('cat .tmp | grep "All heap blocks"' ,shell=True, capture_output=True)
 			if (leaksMsg in str(outputLeaksPossible.stdout)):
-				print(f"{BHGREEN}NO LEAKS, OK !{RESET}")
+				print(f"{BHGREEN}NO LEAKS, OK !{RESET}", end="\n\n")
 			else:
 				stats["nb_leaks"] += 1
 				stats["map_leaks"].append([mapfolder, mapname])
 				subprocess.run('cat .tmp', shell=True)
-				print(f"{BHRED}SOME LEAKS FOUND, TEST FAILED !{RESET}")
+				print(f"{BHRED}SOME LEAKS FOUND, TEST FAILED !{RESET}", end="\n\n")
 		else:
 			subprocess.run('cat .tmp', shell=True)
 		subprocess.run("rm .tmp", shell=True)
@@ -83,37 +84,81 @@ def basic_exec():
 		print(f"{BHWHITE}Executing in {BHMAG}{mapfolder}{RESET} of :{RESET}{BHGREEN} {mapname}{RESET}")
 
 		output = subprocess.run(command, shell=True, capture_output=True)
+		print(output.stdout.decode('utf-8'), end="")
 		if (output.stderr.decode('utf-8') == ""):
-			print(f"{BHGREEN}OK !{RESET}")
+			print(f"{BHGREEN}OK !{RESET}", end="\n\n")
 		else:
-			print(f"{BHRED}ERROR, TEST FAILED !{RESET}")
-		print(output.stdout.decode('utf-8'))
+			stats["nb_failed"] += 1
+			stats["map_failed"].append([mapfolder, mapname])
+			print(output.stderr.decode('utf-8'), end="")
+			print(f"{BHRED}ERROR, TEST FAILED !{RESET}", end="\n\n")
+
+
 
 
 stats = {
-	"nb_maps": 0,
+	"nb_maps": len(get_invalid_maps()),
+	"nb_failed": 0,
 	"nb_leaks": 0,
+	"map_failed": [],
 	"map_leaks": []
 }
 
-stats["nb_maps"] = len(get_invalid_maps())
+def display_stats(fails: int, nb_maps: int, maps_failed: list):
+	print("\n" * 2)
 
-subprocess.run("clear", shell=True)
-print("=" * 50)
-print(f"{BHCYAN}EXECUTING WITHOUT VALGRIND{RESET}")
-print("=" * 50)
-time.sleep(1.0)
-basic_exec()
-input("Press enter to continue...")
-subprocess.run("clear", shell=True)
-print("=" * 50)
-print(f"{BHGREEN}EXECUTING WITH VALGRIND{RESET}")
-print("=" * 50)
-time.sleep(1.0)
-valgrind_exec()
+	print(BHWHITE, end="")
+	print("=" * 57)
+	print("=" * 20, end="")
+	print(RESET, end="")
+	print(f"{' ' * 5}{BHCYAN}SUMMARY{' ' * 5}{RESET}", end="")
+	print(BHWHITE, end="")
+	print("=" * 20)
+	print("=" * 57)
+	print(RESET, end="")
+	print("\n")
 
-print("=" * 50)
-print(f"{BHWHITE}SUMMARY{RESET}")
-print(f"STATS : {stats['nb_leaks']} memory test failed on {stats['nb_maps']}")
-for map in stats["map_leaks"]:
-	print(f" - {BHWHITE}{map[0]}/{RESET}{BHRED}{map[1]}{RESET}")
+	if (fails == 0):
+		print(f"{BHWHITE}STATS : {RESET}{BHGREEN}ALL TESTS PASSED !{RESET}")
+		return
+	elif (fails == 1):
+		print(f"{BHWHITE}STATS : {RESET}{BHRED}{fails}{RESET} test failed on {BHRED}{nb_maps}{RESET} maps")
+	else:
+		print(f"{BHWHITE}STATS : {RESET}{BHRED}{fails}{RESET} tests failed on {BHRED}{nb_maps}{RESET} maps")
+
+
+	for map in maps_failed:
+		print(f" - {BHWHITE}{map[0]}/{RESET}{BHRED}{map[1]}{RESET}")
+	print("\n")
+	print(BHWHITE, end="")
+	print("=" * 57)
+	print(RESET, end="")
+
+def main():
+	subprocess.run("clear", shell=True)
+	print("=" * 50)
+	print(f"{BHCYAN}EXECUTING WITHOUT VALGRIND{RESET}")
+	print("=" * 50)
+	time.sleep(1.5)
+	basic_exec()
+
+	display_stats(stats["nb_failed"], stats["nb_maps"], stats["map_failed"])
+
+	input("Press enter to continue...")
+
+
+	subprocess.run("clear", shell=True)
+
+	print("=" * 50)
+	print(f"{BHGREEN}EXECUTING WITH VALGRIND{RESET}")
+	print("=" * 50)
+	time.sleep(1.5)
+	valgrind_exec()
+
+	display_stats(stats["nb_leaks"], stats["nb_maps"], stats["map_leaks"])
+
+	input("Press enter to exit...")
+	subprocess.run("clear", shell=True)
+
+if __name__ == "__main__":
+	main();
