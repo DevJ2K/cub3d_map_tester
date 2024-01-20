@@ -6,7 +6,7 @@
 #    By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 15:04:36 by tajavon           #+#    #+#              #
-#    Updated: 2024/01/20 16:45:40 by tajavon          ###   ########.fr        #
+#    Updated: 2024/01/20 17:25:17 by tajavon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ import subprocess
 import time
 import os
 import json
+import display_signature
 
 BHGREEN = "\033[1;92m"
 BHMAG = "\033[1;95m"
@@ -32,6 +33,8 @@ try:
 	display_all = False
 
 	fd.close()
+	display_signature.display_signature()
+	time.sleep(1)
 
 except:
 	print("Something went wrong when trying to get config.")
@@ -135,7 +138,7 @@ def display_stats(fails: int, nb_maps: int, maps_failed: list):
 	print(RESET, end="")
 
 def main():
-	subprocess.run("clear", shell=True)
+	# subprocess.run("clear", shell=True)
 	print("=" * 50)
 	print(f"{BHCYAN}EXECUTING WITHOUT VALGRIND{RESET}")
 	print("=" * 50)
