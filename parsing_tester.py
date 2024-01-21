@@ -6,7 +6,7 @@
 #    By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 15:04:36 by tajavon           #+#    #+#              #
-#    Updated: 2024/01/21 22:11:42 by tajavon          ###   ########.fr        #
+#    Updated: 2024/01/21 22:38:11 by tajavon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,12 @@ try:
 
 	cub_path = file["filepath"]
 	map_directory = file["invalid_map_folder"]
+	clear = file["clear"]
 	display_all = False
 
 	fd.close()
 	display_signature()
-	time.sleep(1)
+	input("\nPress enter to run...")
 
 except:
 	print("Something went wrong when trying to get config.")
@@ -137,7 +138,8 @@ def display_stats(fails: int, nb_maps: int, maps_failed: list):
 	print(RESET, end="")
 
 def main():
-	# subprocess.run("clear", shell=True)
+	if (clear == True):
+		subprocess.run("clear", shell=True)
 	print("=" * 50)
 	print(f"{BHCYAN}EXECUTING WITHOUT VALGRIND{RESET}")
 	print("=" * 50)
@@ -148,8 +150,8 @@ def main():
 
 	input("Press enter to continue...")
 
-
-	subprocess.run("clear", shell=True)
+	if (clear == True):
+		subprocess.run("clear", shell=True)
 
 	print("=" * 50)
 	print(f"{BHGREEN}EXECUTING WITH VALGRIND{RESET}")
@@ -159,8 +161,9 @@ def main():
 
 	display_stats(stats["nb_leaks"], stats["nb_maps"], stats["map_leaks"])
 
-	input("Press enter to exit...")
-	subprocess.run("clear", shell=True)
+	if (clear == True):
+		input("Press enter to exit...")
+		subprocess.run("clear", shell=True)
 
 if __name__ == "__main__":
 	main();
