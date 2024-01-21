@@ -6,5 +6,8 @@ Clone the repository inside your Cub3D folder. Check in the config.json if the e
 
 ## Run
 
-### 1. make
-### 2. Then Press enter to run the tester
+### > make
+#
+if the tester doesn't works with make, do :
+### > pythonX.YY parsing_tester.py 
+(X.YY is the version, ex. : 3.11) 
