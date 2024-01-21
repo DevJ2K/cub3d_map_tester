@@ -4,10 +4,10 @@
 	"clear": true,
 
 	"invalid_map_folder": [
-		"maps/invalid/custom",
-		"maps/invalid/basic_test",
-		"maps/invalid/path",
-		"maps/invalid/extra",
-		"maps/invalid/colors"
+		"invalid_maps/custom",
+		"invalid_maps/basic_test",
+		"invalid_maps/path",
+		"invalid_maps/extra",
+		"invalid_maps/colors"
 	]
 }
