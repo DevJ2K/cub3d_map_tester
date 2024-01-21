@@ -6,4 +6,5 @@ Clone the repository inside your Cub3D folder. Check in the config.json if the e
 
 ## Run
 
-> make
+### 1. make
+### 2. Then Press enter to run the tester
