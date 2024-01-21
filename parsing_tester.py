@@ -6,7 +6,7 @@
 #    By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 15:04:36 by tajavon           #+#    #+#              #
-#    Updated: 2024/01/20 17:30:35 by tajavon          ###   ########.fr        #
+#    Updated: 2024/01/21 22:11:42 by tajavon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ import subprocess
 import time
 import os
 import json
-import display_signature
+from my_signature.display_signature import display_signature
 
 BHGREEN = "\033[1;92m"
 BHMAG = "\033[1;95m"
@@ -28,12 +28,11 @@ try:
 	file = json.load(fd)
 
 	cub_path = file["filepath"]
-	print(cub_path)
 	map_directory = file["invalid_map_folder"]
 	display_all = False
 
 	fd.close()
-	display_signature.display_signature()
+	display_signature()
 	time.sleep(1)
 
 except:
