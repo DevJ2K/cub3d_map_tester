@@ -6,6 +6,10 @@ Clone the repository inside your Cub3D folder. Check in the config.json if the e
 
 ## Run
 
+#### note
+- To be sure that the test does not set false for nothing, instead of displaying the errors on stderr display them on stdout because the test checks if the stderr is empty at the end. (Don't forget to put the errors back on stderr at the end of course :))
+- All maps are invalid. So if a map can be run, it's wrong.
+
 #### > make
 #
 if the tester doesn't works with make, do :
